@@ -1,0 +1,933 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manual de Processos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: menu-índice fixo à esquerda (estilo galeria), conteúdo em coluna única à direita */
+  :root {
+    --rosa: #ea2d79;
+    --rosa-claro: #fde8f1;
+    --grafite: #212121;
+    --texto: #2e2e2e;
+    --cinza: #6b6b6b;
+    --linha: #e5e5e5;
+    --fundo: #ffffff;
+    --fundo-alt: #f4f4f4;
+    --sans: "Poppins", Arial, Helvetica, sans-serif;
+    --mono: "IBM Plex Mono", "Courier New", Courier, monospace;
+    --menu-w: 300px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+
+  /* ---------- Menu ---------- */
+  .menu {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: var(--menu-w);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding: 40px 32px;
+    border-right: 1px solid var(--linha);
+    background: var(--fundo);
+    overflow-y: auto;
+  }
+  .marca {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-decoration: none;
+  }
+  .marca strong {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--grafite);
+    line-height: 1.15;
+  }
+  .marca span {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--rosa);
+    letter-spacing: 0.06em;
+  }
+  .busca input {
+    width: 100%;
+    padding: 9px 12px;
+    font: inherit;
+    font-size: 13px;
+    border: 1px solid var(--linha);
+    border-radius: 2px;
+    background: var(--fundo-alt);
+    color: var(--texto);
+  }
+  .busca input:focus { outline: none; border-color: var(--rosa); background: var(--fundo); }
+  .grupo-titulo {
+    margin: 0 0 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cinza);
+  }
+  .lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .lista a {
+    display: block;
+    padding: 6px 0;
+    text-decoration: none;
+    font-size: 14px;
+    color: var(--texto);
+  }
+  .lista a:hover, .lista a.ativo { color: var(--rosa); }
+  .menu-rodape {
+    margin-top: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--cinza);
+  }
+  .vazio-busca { font-size: 13px; color: var(--cinza); padding: 6px 0; }
+
+  /* ---------- Conteúdo ---------- */
+  .conteudo {
+    margin-left: var(--menu-w);
+    padding-block: 64px 96px;
+    padding-inline: 64px;
+    min-height: 100vh;
+  }
+  .pagina { max-width: 760px; display: flex; flex-direction: column; gap: 40px; }
+
+  .capa {
+    aspect-ratio: 16 / 7;
+    max-width: 100%;
+    background: var(--rosa);
+    display: flex;
+    align-items: flex-end;
+    padding: 28px 32px;
+  }
+  .capa span {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 600;
+    line-height: 1.05;
+    color: #fff;
+    text-wrap: balance;
+  }
+  .legenda {
+    margin-top: -28px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--cinza);
+  }
+  hr { border: 0; border-top: 1px solid var(--linha); margin: 0; width: 100%; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rosa);
+    margin: 0 0 8px;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(28px, 3.4vw, 38px);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--grafite);
+    text-wrap: balance;
+  }
+  h2 {
+    margin: 0 0 12px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grafite);
+  }
+  .texto { max-width: 65ch; margin: 0; min-height: 1.6em; }
+  .placeholder { color: #b5b5b5; }
+
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    border-top: 1px solid var(--linha);
+    border-bottom: 1px solid var(--linha);
+  }
+  .meta div { padding: 14px 16px 14px 0; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .meta dt { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cinza); }
+  .meta dd { margin: 0; font-size: 14px; color: var(--texto); }
+
+  .passos { list-style: none; margin: 0; padding: 0; counter-reset: p; display: flex; flex-direction: column; }
+  .passos li {
+    counter-increment: p;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 12px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--linha);
+    min-height: 56px;
+  }
+  .passos li::before {
+    content: counter(p, decimal-leading-zero);
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--rosa);
+    padding-top: 2px;
+  }
+  .passos li:first-child { border-top: 1px solid var(--linha); }
+
+  .atencao {
+    background: var(--rosa-claro);
+    border-left: 3px solid var(--rosa);
+    padding: 18px 22px;
+  }
+  .atencao h2 { color: var(--rosa); }
+
+  .anexos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .anexos div {
+    aspect-ratio: 4 / 3;
+    max-width: 100%;
+    background: var(--fundo-alt);
+    border: 1px dashed var(--linha);
+  }
+
+  /* ---------- Árvore do menu: Área › Amostra/Fornecedor › Categoria › Seção ---------- */
+  .sub-lista { list-style: none; margin: 0 0 4px; padding: 0 0 0 14px; border-left: 1px solid var(--linha); }
+  .sub-lista a { font-size: 13px; padding: 4px 0; color: var(--cinza); }
+  .lista a.trilha { color: var(--grafite); font-weight: 500; }
+  .lista a.ativo { color: var(--rosa); }
+  .lista a small { display: block; font-family: var(--mono); font-size: 10px; color: var(--cinza); letter-spacing: .04em; }
+
+  .eyebrow a { text-decoration: none; }
+  .eyebrow a:hover { text-decoration: underline; }
+
+  /* Cartões de escolha (área → Amostra/Fornecedor → categoria) */
+  .escolhas { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .escolha {
+    display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; min-height: 170px;
+    padding: 24px; border: 1px solid var(--linha); text-decoration: none; color: var(--texto);
+    transition: border-color .15s ease;
+  }
+  .escolha:hover { border-color: var(--rosa); }
+  .escolha .num { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--rosa); }
+  .escolha strong { font-size: 22px; font-weight: 600; line-height: 1.15; color: var(--grafite); }
+  .escolha small { font-family: var(--mono); font-size: 11px; color: var(--cinza); }
+
+  /* Alternar Amostra / Fornecedor mantendo a mesma categoria e seção */
+  .origem-seg { display: inline-flex; border: 1px solid var(--grafite); }
+  .origem-seg a, .origem-seg span {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+    padding: 7px 16px; text-decoration: none; color: var(--grafite);
+  }
+  .origem-seg a.ativo { background: var(--grafite); color: #fff; }
+  .origem-seg a:hover:not(.ativo) { color: var(--rosa); }
+  .controles { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+
+  .abas { display: flex; flex-wrap: wrap; gap: 8px; }
+  .abas a, .abas span {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+    padding: 7px 14px; border: 1px solid var(--linha); text-decoration: none; color: var(--texto);
+  }
+  .abas a.ativo { background: var(--grafite); border-color: var(--grafite); color: #fff; }
+  .abas a:hover:not(.ativo) { border-color: var(--rosa); color: var(--rosa); }
+  .abas span { color: #c4c4c4; border-style: dashed; }
+
+  .pagina-larga { max-width: 1040px; }
+  .lead { font-size: 17px; line-height: 1.55; color: var(--grafite); max-width: 60ch; margin: 0; text-wrap: pretty; }
+
+  .vistas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; counter-reset: v; }
+  .vistas li { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .foto {
+    aspect-ratio: 3 / 4; width: 100%; max-width: 100%; background: var(--fundo-alt);
+    overflow: hidden; position: relative; margin: 0;
+  }
+  .foto img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; transition: transform .4s ease; }
+  .foto:hover img { transform: scale(1.03); }
+  .foto.sem-img img { display: none; }
+  .foto.sem-img::after {
+    content: "imagem pendente"; position: absolute; inset: 0; display: grid; place-items: center;
+    font-family: var(--mono); font-size: 11px; color: #b5b5b5; border: 1px dashed #d9d9d9;
+  }
+  .vista-num { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--rosa); }
+  .vista-nome { font-size: 14px; font-weight: 500; color: var(--grafite); line-height: 1.3; }
+  .vista-obs { font-size: 12px; color: var(--cinza); line-height: 1.4; }
+
+  .regra {
+    display: grid; grid-template-columns: 48px 1fr; gap: 16px; align-items: start;
+    padding: 24px 0; border-top: 2px solid var(--grafite); border-bottom: 1px solid var(--linha);
+  }
+  .regra::before { content: "!"; font-family: var(--mono); font-size: 28px; line-height: 1; color: var(--rosa); }
+  .regra p { margin: 0; font-size: 16px; line-height: 1.55; color: var(--grafite); max-width: 58ch; }
+  .regra strong { font-weight: 600; box-shadow: inset 0 -0.45em 0 var(--rosa-claro); }
+
+  /* Mesma grade e mesmo formato 3:4 das vistas: todas as imagens com o mesmo tamanho */
+  .galeria { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+  /* ---------- Edição de imagens (só no PC que hospeda, via localhost) ---------- */
+  .topo-secao { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+  .btn-editar {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+    padding: 7px 14px; border: 1px solid var(--rosa); background: none; color: var(--rosa); cursor: pointer;
+  }
+  .btn-editar[aria-pressed="true"] { background: var(--rosa); color: #fff; }
+  .aviso-edicao {
+    font-family: var(--mono); font-size: 12px; color: var(--rosa); background: var(--rosa-claro);
+    padding: 10px 14px; margin: 0;
+  }
+  .foto .acoes {
+    position: absolute; inset: auto 0 0 0; display: none; gap: 6px; padding: 10px;
+    background: linear-gradient(transparent, rgba(0,0,0,.55));
+  }
+  body.editando .foto:not(.sem-img) .acoes { display: flex; }
+  body.editando .foto img { cursor: default; }
+  body.editando .foto:hover img { transform: none; }
+  .acoes button {
+    flex: 1; font: inherit; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em;
+    padding: 6px 4px; border: 0; background: #fff; color: var(--grafite); cursor: pointer;
+  }
+  .acoes button.remover { color: var(--rosa); }
+  .slot-upload {
+    display: none; position: absolute; inset: 0; z-index: 1; width: 100%;
+    flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    font: inherit; font-size: 13px; color: var(--rosa); text-align: center; padding: 12px;
+    background: var(--fundo); border: 1.5px dashed var(--rosa); cursor: pointer;
+  }
+  .slot-upload small { font-family: var(--mono); font-size: 10px; color: var(--cinza); }
+  .slot-upload b { font-size: 26px; font-weight: 300; line-height: 1; }
+  body.editando .foto.sem-img .slot-upload { display: flex; }
+  body.editando .foto.sem-img::after { display: none; }
+  .foto.arrastando .slot-upload, .foto.arrastando { outline: 3px solid var(--rosa); outline-offset: -3px; background: var(--rosa-claro); }
+  .foto.enviando::before {
+    content: "enviando…"; position: absolute; inset: 0; z-index: 2; display: grid; place-items: center;
+    background: rgba(255,255,255,.85); font-family: var(--mono); font-size: 12px; color: var(--rosa);
+  }
+  /* Textos editáveis (modo edição): salva ao clicar fora ou Enter; Esc desfaz */
+  body.editando .editavel { outline: 1px dashed var(--rosa); outline-offset: 4px; cursor: text; min-height: 1.4em; }
+  body.editando .editavel:focus { outline-style: solid; background: var(--rosa-claro); }
+  body.editando .editavel:empty::before { content: attr(data-placeholder); color: #b5b5b5; }
+  .editavel.salvando { opacity: .5; }
+  .aviso-salvo {
+    position: fixed; right: 20px; bottom: 20px; z-index: 60; padding: 10px 16px;
+    font-family: var(--mono); font-size: 12px; background: var(--grafite); color: #fff;
+    opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; pointer-events: none;
+  }
+  .aviso-salvo.visivel { opacity: 1; transform: none; }
+  .aviso-salvo.erro { background: var(--rosa); }
+  .foto.adicionar { display: none; }
+  body.editando .foto.adicionar { display: block; }
+
+  .lightbox {
+    position: fixed; inset: 0; z-index: 50; background: rgba(20,20,20,.92);
+    display: none; place-items: center; padding: 32px; cursor: zoom-out;
+  }
+  .lightbox.aberto { display: grid; }
+  .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+  @media (max-width: 860px) {
+    .vistas { grid-template-columns: repeat(2, 1fr); }
+    .galeria { grid-template-columns: repeat(2, 1fr); }
+    .regra { grid-template-columns: 28px 1fr; gap: 10px; }
+  }
+
+  .contato { font-family: var(--mono); font-size: 13px; color: var(--cinza); display: flex; flex-wrap: wrap; gap: 6px 24px; }
+  .nav-proc { display: flex; justify-content: space-between; gap: 16px; font-family: var(--mono); font-size: 13px; }
+  .nav-proc a { text-decoration: none; color: var(--cinza); }
+  .nav-proc a:hover { color: var(--rosa); }
+
+  /* ---------- Mobile ---------- */
+  .topo-mobile { display: none; }
+  @media (max-width: 860px) {
+    .menu { transform: translateX(-100%); transition: transform .25s ease; z-index: 20; width: min(300px, 85vw); }
+    body.menu-aberto .menu { transform: none; box-shadow: 0 0 0 100vmax rgba(0,0,0,.25); }
+    .topo-mobile {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 14px 16px;
+      background: var(--fundo);
+      border-bottom: 1px solid var(--linha);
+    }
+    .topo-mobile strong { font-size: 15px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--grafite); }
+    .topo-mobile button {
+      font: inherit; font-size: 13px; background: none; border: 1px solid var(--linha);
+      padding: 6px 12px; color: var(--texto); cursor: pointer;
+    }
+    .conteudo { margin-left: 0; padding-inline: 16px; padding-block: 32px 64px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .menu { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="topo-mobile">
+  <strong>Manual de Processos</strong>
+  <button id="btn-menu" type="button" aria-controls="menu" aria-expanded="false">Menu</button>
+</header>
+
+<nav class="menu" id="menu" aria-label="Processos">
+  <a class="marca" href="#inicio">
+    <strong>Manual de<br>Processos</strong>
+    <span>PRIVALIA</span>
+  </a>
+
+  <label class="busca">
+    <input id="busca" type="search" placeholder="Buscar processo" aria-label="Buscar processo">
+  </label>
+
+  <div>
+    <p class="grupo-titulo">Áreas</p>
+    <ul class="lista" id="lista-processos"></ul>
+  </div>
+
+  <div>
+    <p class="grupo-titulo">Geral</p>
+    <ul class="lista">
+      <li><a href="#inicio" data-rota="inicio">Início</a></li>
+      <li><a href="#sobre" data-rota="sobre">Sobre</a></li>
+    </ul>
+  </div>
+
+  <p class="menu-rodape" id="versao"></p>
+</nav>
+
+<main class="conteudo" id="conteudo"></main>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Imagem ampliada"><img alt=""></div>
+
+<script>
+// ===== Conteúdo do manual =====
+const MANUAL = {
+  versao: "v0.1",
+  contato: { nome: "", email: "" },
+  sobre: "",
+};
+
+// Estrutura: Área › Amostra/Fornecedor › Categoria › Seção
+// As regras mudam entre Amostra e Fornecedor; as categorias são as mesmas nos dois.
+const ORIGENS = [
+  { id: "amostra", titulo: "Amostra" },
+  { id: "fornecedor", titulo: "Fornecedor" },
+];
+// Categorias e suas seções: iguais em todas as áreas e em Amostra/Fornecedor.
+// Categoria sem seções vira uma página única. Ordem da página: vistas → mais exemplos → regra "!" (+ fotos).
+// O conteúdo (textos e imagens) é separado para cada Área › Origem › Categoria › Seção.
+const CATEGORIAS = [
+  { id: "fashion", titulo: "Fashion", secoes: [
+    { id: "top", titulo: "Top" },
+    { id: "bottom", titulo: "Bottom" },
+    { id: "peca-inteira", titulo: "Peça inteira" },
+  ] },
+  { id: "still", titulo: "Still", secoes: [
+    { id: "sapato", titulo: "Sapato" },
+    { id: "bolsas", titulo: "Bolsas" },
+    { id: "acessorios", titulo: "Acessórios" },
+    { id: "oculos", titulo: "Óculos" },
+  ] },
+  { id: "kids", titulo: "Kids", secoes: [
+    { id: "top", titulo: "Top" },
+    { id: "bottom", titulo: "Bottom" },
+    { id: "peca-inteira", titulo: "Peça inteira" },
+    { id: "conjunto", titulo: "Conjunto" },
+    { id: "bebes", titulo: "Bebês" },
+  ] },
+  { id: "underwear", titulo: "Underwear", secoes: [] },
+  { id: "beachwear", titulo: "Beachwear", secoes: [] },
+];
+const VISTAS_PADRAO = ["Total look", "Crop do total look para plano americano", "Crop do detalhe", "Total de costas"];
+
+const AREAS = [
+  { id: "geradores", titulo: "Geradores de Imagem" },
+  { id: "stylist", titulo: "Stylist" },
+  { id: "fotografos", titulo: "Fotógrafos" },
+];
+
+// Textos padrão por página (chave = área/origem/categoria/seção). O que for editado no site tem prioridade.
+// Imagens em img/<pasta>/ — pasta = "<area>-<origem>-<categoria>/<secao>", ou o campo "pasta" daqui.
+const PADROES = {
+  "geradores/amostra/fashion/top": {
+    pasta: "fashion/top-amostra", // pasta original: mantém as imagens já enviadas
+    // Slide 4 — ordem das vistas
+    intro: "As ferramentas de IA geram imagens na sequência que aparece no site:",
+    // Slide 5 — regra + galeria "usos"
+    regra: "O top pode ser usado de várias formas, mas em <strong>ao menos uma das vistas</strong> o <strong>comprimento da peça</strong> e as <strong>mangas</strong> (quando compridas) devem aparecer com clareza.",
+    // Slide 6 — galeria "exemplos"
+    exemplosTitulo: "Mais alguns exemplos de como o top pode ser usado.",
+  },
+};
+
+// Links antigos (antes de existir Área/Origem) continuam funcionando
+const ROTAS_ANTIGAS = {
+  "fashion/top-amostra": "geradores/amostra/fashion/top",
+  fashion: "geradores/amostra/fashion", still: "geradores/amostra/still",
+  underwear: "geradores/amostra/underwear", beachwear: "geradores/amostra/beachwear",
+};
+
+// ===== Render =====
+const $ = (s) => document.querySelector(s);
+const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const val = (t) => (t ? esc(t) : '<span class="placeholder">—</span>');
+
+// Seções da categoria; sem seções definidas = uma página única com o nome da categoria
+const secoesDe = (c) => (c.secoes.length ? c.secoes : [{ id: "geral", titulo: c.titulo }]);
+const padraoDe = (a, o, c, s) => PADROES[`${a.id}/${o.id}/${c.id}/${s.id}`] || {};
+const pastaDe = (a, o, c, s) => padraoDe(a, o, c, s).pasta || `${a.id}-${o.id}-${c.id}/${s.id}`;
+
+// Todas as páginas de conteúdo, com caminho legível (busca)
+function todasSecoes() {
+  const r = [];
+  for (const a of AREAS) for (const o of ORIGENS) for (const c of CATEGORIAS) for (const s of secoesDe(c)) {
+    const partes = [a.titulo, o.titulo, c.titulo, ...(c.secoes.length ? [s.titulo] : [])];
+    r.push({ a, o, c, s, rota: `${a.id}/${o.id}/${c.id}/${s.id}`, caminho: partes.join(" › "), titulo: partes.at(-1), onde: partes.slice(0, -1).join(" › ") });
+  }
+  return r;
+}
+
+function renderLista(filtro = "") {
+  const f = filtro.trim().toLowerCase();
+  const r = rotaAtual();
+  const cls = (rota) => (r === rota ? "ativo" : r.startsWith(rota + "/") ? "trilha" : "");
+  const link = (rota, titulo, extra = "") => `<a href="#${rota}" data-rota="${rota}" class="${cls(rota)}">${titulo}${extra}</a>`;
+
+  if (f) {
+    const achados = todasSecoes().filter((x) => x.caminho.toLowerCase().includes(f));
+    $("#lista-processos").innerHTML = achados.length
+      ? achados.map((x) => `<li>${link(x.rota, esc(x.titulo), `<small>${esc(x.onde)}</small>`)}</li>`).join("")
+      : '<li class="vazio-busca">Nenhum processo encontrado</li>';
+    return;
+  }
+
+  const [aid, oid, cid] = r.split("/");
+  $("#lista-processos").innerHTML = AREAS.map((a) => {
+    const origens = ORIGENS.map((o) => {
+      const base = `${a.id}/${o.id}`;
+      // categorias só aparecem na origem aberta
+      const cats = aid === a.id && oid === o.id
+        ? `<ul class="sub-lista">${CATEGORIAS.map((c) => {
+            const ss = secoesDe(c);
+            const rc = `${base}/${c.id}`;
+            const ativa = cid === c.id ? (c.secoes.length ? "trilha" : "ativo") : "";
+            const secs = c.secoes.length ? `<ul class="sub-lista">${ss.map((s) => `<li>${link(`${rc}/${s.id}`, esc(s.titulo))}</li>`).join("")}</ul>` : "";
+            return `<li><a href="#${rc}/${ss[0].id}" class="${ativa}">${esc(c.titulo)}</a>${secs}</li>`;
+          }).join("")}</ul>`
+        : "";
+      return `<li>${link(base, esc(o.titulo))}${cats}</li>`;
+    }).join("");
+    return `<li>${link(a.id, esc(a.titulo))}<ul class="sub-lista">${origens}</ul></li>`;
+  }).join("");
+}
+
+function cartoesAreas() {
+  return `<div class="escolhas">${AREAS.map((a, n) =>
+    `<a class="escolha" href="#${a.id}"><span class="num">${String(n + 1).padStart(2, "0")}</span><strong>${esc(a.titulo)}</strong><small>Amostra · Fornecedor</small></a>`).join("")}</div>`;
+}
+
+function paginaInicio() {
+  const c = MANUAL.contato;
+  return `
+    <article class="pagina pagina-larga">
+      <div class="capa"><span>Manual de Processos</span></div>
+      <p class="legenda">${esc(MANUAL.versao)}</p>
+      <section><h2>Áreas</h2>${cartoesAreas()}</section>
+      <hr>
+      <p class="texto">${val(MANUAL.sobre)}</p>
+      <div class="contato"><span>${val(c.nome)}</span><span>${val(c.email)}</span></div>
+    </article>`;
+}
+
+// Área: primeiro passo é escolher Amostra ou Fornecedor
+function paginaArea(a) {
+  const cards = ORIGENS.map((o, n) => `<a class="escolha" href="#${a.id}/${o.id}"><span class="num">${String(n + 1).padStart(2, "0")}</span>
+      <strong>${esc(o.titulo)}</strong><small>${esc(CATEGORIAS.map((c) => c.titulo).join(" · "))}</small></a>`).join("");
+  return `
+    <article class="pagina pagina-larga">
+      <header><p class="eyebrow"><a href="#inicio">Áreas</a></p><h1>${esc(a.titulo)}</h1></header>
+      <p class="lead">Escolha o tipo de peça. As regras de Amostra e Fornecedor são diferentes; as categorias são as mesmas.</p>
+      <div class="escolhas">${cards}</div>
+    </article>`;
+}
+
+// ===== Textos editáveis no site (textos.json, via servidor.py) =====
+// Valor salvo no site tem prioridade sobre o texto padrão escrito aqui no código.
+let TEXTOS = {};
+const txt = (chave, campo, padrao) => TEXTOS[chave]?.[campo] ?? padrao ?? "";
+// Texto "rico": só negrito/itálico/quebra de linha; todo o resto é escapado
+const rico = (t) => esc(t).replace(/&lt;(\/?)(strong|b|em|i|br)\s*\/?&gt;/gi, "<$1$2>");
+
+// Renderiza um texto; no modo edição vira campo editável. Vazio e fora da edição = não aparece.
+function editavel(tag, chave, campo, padrao, { rich = false, cls = "", vazio = "Escreva aqui…" } = {}) {
+  const v = txt(chave, campo, padrao);
+  const html = rich ? rico(v) : esc(v);
+  if (!EDITANDO) return v ? `<${tag}${cls ? ` class="${cls}"` : ""}>${html}</${tag}>` : "";
+  return `<${tag} class="${cls} editavel" contenteditable="${rich ? "true" : "plaintext-only"}" spellcheck="true"
+    data-chave="${esc(chave)}" data-campo="${esc(campo)}" data-rico="${rich ? 1 : ""}" data-original="${esc(v)}"
+    data-placeholder="${esc(vazio)}">${html}</${tag}>`;
+}
+
+// innerHTML do campo rico → texto com só <strong>/<em>/<br>
+function limparRico(html) {
+  return html
+    .replace(/<div[^>]*>/gi, "<br>").replace(/<\/div>/gi, "")
+    .replace(/<(\/?)(strong|b|em|i|br)\b[^>]*>/gi, "<$1$2>")
+    .replace(/<(?!\/?(strong|b|em|i|br)>)[^>]*>/gi, "")
+    .replace(/&nbsp;/g, " ").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&amp;/g, "&")
+    .replace(/^(\s|<br>)+|(\s|<br>)+$/gi, "");
+}
+
+let avisoTimer;
+function avisar(msg, erro = false) {
+  let el = $(".aviso-salvo");
+  if (!el) { el = Object.assign(document.createElement("div"), { className: "aviso-salvo", role: "status" }); document.body.append(el); }
+  el.textContent = msg;
+  el.classList.toggle("erro", erro);
+  el.classList.add("visivel");
+  clearTimeout(avisoTimer);
+  avisoTimer = setTimeout(() => el.classList.remove("visivel"), erro ? 5000 : 1800);
+}
+
+document.addEventListener("focusout", async (e) => {
+  const el = e.target.closest?.("[data-chave][data-campo]");
+  if (!el || !EDITANDO) return;
+  const valor = el.dataset.rico ? limparRico(el.innerHTML) : el.innerText.trim();
+  if (valor === el.dataset.original) return;
+  el.classList.add("salvando");
+  try {
+    const q = new URLSearchParams({ secao: el.dataset.chave, campo: el.dataset.campo });
+    const r = await fetch(`/api/texto?${q}`, { method: "PUT", body: valor, headers: { "Content-Type": "text/plain; charset=utf-8" } });
+    const dados = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(dados.erro || `erro ${r.status}`);
+    TEXTOS = dados;
+    el.dataset.original = valor;
+    avisar("Texto salvo");
+  } catch (err) {
+    avisar("Não foi possível salvar o texto: " + err.message, true);
+  }
+  el.classList.remove("salvando");
+});
+
+document.addEventListener("keydown", (e) => {
+  const el = e.target.closest?.("[data-chave][data-campo]");
+  if (!el) return;
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); el.blur(); }          // Shift+Enter = nova linha (campo rico)
+  if (e.key === "Escape") { el.innerHTML = el.dataset.rico ? rico(el.dataset.original) : esc(el.dataset.original); el.blur(); }
+});
+
+function botaoEditar() {
+  return PODE_EDITAR
+    ? `<button type="button" class="btn-editar" data-acao="alternar" aria-pressed="${EDITANDO}">${EDITANDO ? "Concluir edição" : "Editar página"}</button>`
+    : "";
+}
+const avisoEdicao = () => EDITANDO
+  ? `<p class="aviso-edicao">Modo edição: clique nos textos com contorno para alterar (salva ao clicar fora ou Enter; Esc desfaz; Ctrl+B = negrito na regra). Imagens são cortadas no centro para 3:4 (${FOTO_W}×${FOTO_H}). Tudo fica visível para quem abrir o manual; imagens removidas vão para a lixeira do servidor.</p>`
+  : "";
+
+// Origem: lista as categorias (mesmas para Amostra e Fornecedor)
+function paginaOrigem(a, o) {
+  const cards = CATEGORIAS.map((c, n) => {
+    const ss = secoesDe(c);
+    return `<a class="escolha" href="#${a.id}/${o.id}/${c.id}/${ss[0].id}"><span class="num">${String(n + 1).padStart(2, "0")}</span>
+      <strong>${esc(c.titulo)}</strong>${c.secoes.length ? `<small>${esc(c.secoes.map((s) => s.titulo).join(" · "))}</small>` : ""}</a>`;
+  }).join("");
+  const outra = ORIGENS.find((x) => x !== o);
+  return `
+    <article class="pagina pagina-larga">
+      <header><p class="eyebrow"><a href="#${a.id}">${esc(a.titulo)}</a></p><h1>${esc(o.titulo)}</h1></header>
+      <div class="topo-secao">
+        <div class="controles">${seletorOrigem(o, (x) => `${a.id}/${x.id}`)}</div>
+        ${botaoEditar()}
+      </div>
+      ${avisoEdicao()}
+      ${(() => {
+        const d = editavel("p", `${a.id}/${o.id}`, "descricao", "", { rich: true, vazio: `Regras gerais de ${o.titulo} (opcional)` });
+        return d ? `<div class="regra">${d}</div>` : "";
+      })()}
+      <section><h2>Categorias</h2><div class="escolhas">${cards}</div></section>
+      ${outra ? `<p class="legenda" style="margin-top:0">As mesmas categorias existem em <a href="#${a.id}/${outra.id}">${esc(outra.titulo)}</a>, com regras próprias.</p>` : ""}
+    </article>`;
+}
+
+// Botões Amostra | Fornecedor. destino(o) = rota equivalente na outra origem
+function seletorOrigem(atual, destino) {
+  return `<nav class="origem-seg" aria-label="Amostra ou Fornecedor">${ORIGENS.map((o) =>
+    `<a href="#${destino(o)}" class="${o === atual ? "ativo" : ""}"${o === atual ? ' aria-current="page"' : ""}>${esc(o.titulo)}</a>`).join("")}</nav>`;
+}
+
+function paginaSobre() {
+  return `
+    <article class="pagina">
+      <header><p class="eyebrow">Geral</p><h1>Sobre</h1></header>
+      <hr>
+      <p class="texto">${val(MANUAL.sobre)}</p>
+    </article>`;
+}
+
+// ===== Imagens (manifesto + upload) =====
+let IMAGENS = {};          // conteúdo de img/manifesto.json
+let PODE_EDITAR = false;   // true só quando aberto em localhost pelo servidor.py
+let EDITANDO = false;
+const FOTO_W = 1200, FOTO_H = 1600; // todas as imagens saem 3:4, 1200×1600
+
+// slot: { secao, grupo, indice } — indice -1 = acrescentar na galeria
+function foto(secao, grupo, indice, arquivo, alt) {
+  const dados = `data-secao="${secao}" data-grupo="${grupo}" data-indice="${indice}" data-arquivo="${esc(arquivo || "")}"`;
+  const upload = `<button type="button" class="slot-upload" data-acao="enviar" ${dados}>
+      <b>+</b>${indice < 0 ? "Adicionar imagens" : "Enviar imagem"}<small>clique ou arraste aqui</small></button>`;
+  if (!arquivo) return `<figure class="foto sem-img${indice < 0 ? " adicionar" : ""}" ${dados}>${upload}</figure>`;
+  return `<figure class="foto" ${dados}>
+      <img src="img/${secao}/${esc(arquivo)}" alt="${esc(alt)}" loading="lazy" onerror="this.parentNode.classList.add('sem-img')">
+      ${upload}
+      <div class="acoes">
+        <button type="button" data-acao="enviar" ${dados}>Trocar</button>
+        <button type="button" class="remover" data-acao="remover" ${dados}>Remover</button>
+      </div>
+    </figure>`;
+}
+
+function paginaSecao(a, o, c, s) {
+  const secao = pastaDe(a, o, c, s);
+  const pad = padraoDe(a, o, c, s);
+  const img = IMAGENS[secao] || {};
+  const lista = secoesDe(c);
+  const i = lista.indexOf(s);
+  const ant = lista[i - 1], prox = lista[i + 1];
+  const base = `${a.id}/${o.id}/${c.id}`;
+  const vistas = (s.vistas || VISTAS_PADRAO).map((nome, n) => `
+    <li>
+      ${foto(secao, "vistas", n, img.vistas?.[n], `Vista ${n + 1} — ${txt(secao, `vista.${n}`, nome)}`)}
+      <span class="vista-num">Vista ${n + 1}</span>
+      ${editavel("span", secao, `vista.${n}`, nome, { cls: "vista-nome", vazio: "Nome da vista" })}
+      ${editavel("span", secao, `obs.${n}`, "", { cls: "vista-obs", vazio: "Observação (opcional)" })}
+    </li>`).join("");
+  const grade = (grupo, rotulo) => {
+    const lista = img[grupo] || [];
+    const fotos = lista.length
+      ? lista.map((a, n) => foto(secao, grupo, n, a, `${rotulo} ${n + 1}`)).join("")
+      : (EDITANDO ? "" : [1, 2, 3, 4].map(() => '<figure class="foto sem-img"></figure>').join(""));
+    return `<div class="galeria">${fotos}${foto(secao, grupo, -1, null, "")}</div>`;
+  };
+  return `
+    <article class="pagina pagina-larga">
+      <header>
+        <p class="eyebrow"><a href="#${a.id}">${esc(a.titulo)}</a> › <a href="#${a.id}/${o.id}">${esc(o.titulo)}</a>${c.secoes.length ? ` › ${esc(c.titulo)}` : ""}</p>
+        <h1>${esc(s.titulo)}</h1>
+      </header>
+      <div class="topo-secao">
+        <div class="controles">
+          ${seletorOrigem(o, (x) => `${a.id}/${x.id}/${c.id}/${s.id}`)}
+          ${c.secoes.length ? `<nav class="abas" aria-label="Seções de ${esc(c.titulo)}">
+            ${lista.map((x) => `<a href="#${base}/${x.id}" class="${x === s ? "ativo" : ""}">${esc(x.titulo)}</a>`).join("")}
+          </nav>` : ""}
+        </div>
+        ${botaoEditar()}
+      </div>
+      ${avisoEdicao()}
+      <section>
+        <h2>Ordem das vistas</h2>
+        ${editavel("p", secao, "intro", pad.intro, { cls: "lead", vazio: "Introdução: como as imagens são geradas/organizadas" })}
+      </section>
+      <ol class="vistas">${vistas}</ol>
+      <section>
+        <h2>Mais exemplos</h2>
+        ${editavel("p", secao, "exemplosTitulo", pad.exemplosTitulo, { cls: "lead", vazio: "Texto sobre os exemplos" })}
+      </section>
+      ${grade("exemplos", "Exemplo")}
+      ${(() => { const r = editavel("p", secao, "regra", pad.regra, { rich: true, vazio: "Regra principal" }); return r ? `<div class="regra">${r}</div>` : ""; })()}
+      ${grade("usos", "Exemplo de uso")}
+      <hr>
+      <nav class="nav-proc">
+        ${ant ? `<a href="#${base}/${ant.id}">← ${esc(ant.titulo)}</a>` : "<span></span>"}
+        ${prox ? `<a href="#${base}/${prox.id}">${esc(prox.titulo)} →</a>` : "<span></span>"}
+      </nav>
+    </article>`;
+}
+
+function rotaAtual() { return decodeURIComponent(location.hash.slice(1)) || "inicio"; }
+
+function marcarAtivo() {
+  const r = rotaAtual();
+  document.querySelectorAll(".menu .lista:not(#lista-processos) a[data-rota]").forEach((a) => a.classList.toggle("ativo", a.dataset.rota === r));
+}
+
+function render(manterScroll = false) {
+  const y = window.scrollY;
+  let r = rotaAtual();
+  if (ROTAS_ANTIGAS[r]) { history.replaceState(null, "", "#" + ROTAS_ANTIGAS[r]); r = ROTAS_ANTIGAS[r]; }
+  const [aid, oid, cid, sid] = r.split("/");
+  const a = AREAS.find((x) => x.id === aid);
+  const o = a && ORIGENS.find((x) => x.id === oid);
+  const c = o && CATEGORIAS.find((x) => x.id === cid);
+  const ss = c ? secoesDe(c) : [];
+  const s = ss.find((x) => x.id === sid) || ss[0];
+  let html, titulo;
+  if (s) { html = paginaSecao(a, o, c, s); titulo = `${s.titulo} · ${o.titulo} · ${a.titulo}`; }
+  else if (o) { html = paginaOrigem(a, o); titulo = `${o.titulo} · ${a.titulo}`; }
+  else if (a) { html = paginaArea(a); titulo = a.titulo; }
+  else if (r === "sobre") { html = paginaSobre(); titulo = "Sobre"; }
+  else { html = paginaInicio(); }
+  $("#conteudo").innerHTML = html;
+  document.title = (titulo ? `${titulo} · ` : "") + "Manual de Processos";
+  renderLista($("#busca").value);
+  marcarAtivo();
+  document.body.classList.remove("menu-aberto");
+  $("#btn-menu").setAttribute("aria-expanded", "false");
+  window.scrollTo(0, manterScroll ? y : 0);
+}
+
+$("#busca").addEventListener("input", (e) => renderLista(e.target.value));
+$("#btn-menu").addEventListener("click", () => {
+  const aberto = document.body.classList.toggle("menu-aberto");
+  $("#btn-menu").setAttribute("aria-expanded", String(aberto));
+});
+document.addEventListener("click", (e) => {
+  if (document.body.classList.contains("menu-aberto") && !e.target.closest(".menu, #btn-menu")) {
+    document.body.classList.remove("menu-aberto");
+  }
+});
+window.addEventListener("hashchange", () => render());
+
+// ----- Upload: corta no centro para 3:4 e reduz para 1200×1600 JPEG -----
+async function prepararImagem(arquivo) {
+  const bmp = await createImageBitmap(arquivo);
+  const alvo = FOTO_W / FOTO_H;
+  let sw = bmp.width, sh = bmp.height;
+  if (sw / sh > alvo) sw = sh * alvo; else sh = sw / alvo;
+  const sx = (bmp.width - sw) / 2, sy = (bmp.height - sh) / 2;
+  const c = document.createElement("canvas");
+  c.width = FOTO_W; c.height = FOTO_H;
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, FOTO_W, FOTO_H);
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(bmp, sx, sy, sw, sh, 0, 0, FOTO_W, FOTO_H);
+  bmp.close();
+  return new Promise((ok) => c.toBlob(ok, "image/jpeg", 0.88));
+}
+
+async function api(metodo, { secao, grupo, indice, arquivo }, corpo) {
+  const q = new URLSearchParams({ secao, grupo, indice, arquivo: arquivo || "" });
+  const r = await fetch(`/api/imagem?${q}`, {
+    method: metodo, body: corpo, headers: corpo ? { "Content-Type": "image/jpeg" } : {},
+  });
+  const dados = await r.json().catch(() => ({}));
+  if (dados.manifesto) IMAGENS = dados.manifesto; // 409: outra pessoa mexeu antes, pega a versão atual
+  if (!r.ok) throw new Error(dados.erro || `erro ${r.status}`);
+  IMAGENS = dados;
+}
+
+async function enviar(slot, arquivos, figura) {
+  const imgs = [...arquivos].filter((f) => f.type.startsWith("image/"));
+  if (!imgs.length) return;
+  figura?.classList.add("enviando");
+  try {
+    // troca/vista usa só a 1ª; galeria (indice -1) acrescenta todas, em ordem
+    for (const f of slot.indice < 0 ? imgs : imgs.slice(0, 1)) {
+      await api("POST", slot, await prepararImagem(f));
+    }
+  } catch (err) {
+    alert("Não foi possível enviar: " + err.message);
+  }
+  render(true);
+}
+
+function slotDe(el) {
+  return { secao: el.dataset.secao, grupo: el.dataset.grupo, indice: Number(el.dataset.indice), arquivo: el.dataset.arquivo };
+}
+
+const seletor = Object.assign(document.createElement("input"), { type: "file", accept: "image/*", hidden: true });
+document.body.append(seletor);
+let slotPendente = null;
+seletor.addEventListener("change", () => {
+  if (slotPendente) enviar(slotPendente.slot, seletor.files, slotPendente.figura);
+  seletor.value = "";
+});
+
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest("[data-acao]");
+  if (!btn) return;
+  const acao = btn.dataset.acao;
+  if (acao === "alternar") {
+    EDITANDO = !EDITANDO;
+    document.body.classList.toggle("editando", EDITANDO);
+    // pega o que outras pessoas já enviaram/escreveram antes de começar a editar
+    if (EDITANDO) await carregarDados();
+    return render(true);
+  }
+  const slot = slotDe(btn);
+  if (acao === "enviar") {
+    slotPendente = { slot, figura: btn.closest(".foto") };
+    seletor.multiple = slot.indice < 0;
+    seletor.click();
+  } else if (acao === "remover" && confirm("Remover esta imagem do manual?")) {
+    try { await api("DELETE", slot); } catch (err) { alert("Não foi possível remover: " + err.message); }
+    render(true);
+  }
+});
+
+// Arrastar e soltar sobre qualquer foto (modo edição)
+["dragenter", "dragover"].forEach((ev) => document.addEventListener(ev, (e) => {
+  const fig = EDITANDO && e.target.closest(".foto[data-secao]");
+  if (!fig) return;
+  e.preventDefault();
+  fig.classList.add("arrastando");
+}));
+document.addEventListener("dragleave", (e) => {
+  const fig = e.target.closest(".foto");
+  if (fig && !fig.contains(e.relatedTarget)) fig.classList.remove("arrastando");
+});
+document.addEventListener("drop", (e) => {
+  const fig = EDITANDO && e.target.closest(".foto[data-secao]");
+  if (!fig) return;
+  e.preventDefault();
+  fig.classList.remove("arrastando");
+  enviar(slotDe(fig), e.dataTransfer.files, fig);
+});
+
+// Lightbox: clique na foto amplia, clique/Esc fecha
+const lb = $("#lightbox");
+document.addEventListener("click", (e) => {
+  const img = !EDITANDO && e.target.closest(".foto:not(.sem-img) img");
+  if (img) { lb.querySelector("img").src = img.src; lb.querySelector("img").alt = img.alt; lb.classList.add("aberto"); }
+  else if (e.target.closest("#lightbox")) lb.classList.remove("aberto");
+});
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") lb.classList.remove("aberto"); });
+
+$("#versao").textContent = MANUAL.versao;
+renderLista();
+render();
+
+// Imagens (img/manifesto.json) e textos (textos.json) salvos pelo site
+const lerJson = (url, atual) => fetch(url, { cache: "no-store" }).then((r) => (r.ok ? r.json() : atual)).catch(() => atual);
+async function carregarDados() {
+  [IMAGENS, TEXTOS] = await Promise.all([lerJson("img/manifesto.json", IMAGENS), lerJson("textos.json", TEXTOS)]);
+}
+
+// Carrega o que foi salvo e verifica se este acesso pode editar
+Promise.all([carregarDados(), lerJson("/api/status", {})]).then(([, st]) => {
+  PODE_EDITAR = !!st?.podeEditar;
+  render(true);
+});
+</script>
+</body>
+</html>
